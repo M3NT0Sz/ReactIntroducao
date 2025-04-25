@@ -1,7 +1,27 @@
 import React from "react";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../api";
 
 const ConsultarConta = () => {
+    const location = useLocation();
+    const [conta, setConta] = useState(location.state?.conta || { nome: '', descricao: '' });
+    const navigate = useNavigate();
+
+    const editarConta = () => {
+        api.put('/contas/' + conta.id, conta)
+            .then(() => alert("Conta editada com sucesso!"));
+        navigate('/contas');
+    }
+
+    const excluirConta = () => {
+        if (window.confirm("Tem certeza que deseja excluir a conta?")) {
+            api.delete('/contas/' + conta.id)
+                .then(() => alert("Conta excluída com sucesso!"));
+            navigate('/contas');
+        }
+    }
+
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Editar Conta</h1>
@@ -12,8 +32,10 @@ const ConsultarConta = () => {
                         type="text"
                         className="form-control"
                         id="nome"
+                        name="nome"
                         placeholder="Nome"
-                        value=""
+                        value={conta.nome}
+                        onChange={(e) => setConta({ ...conta, nome: e.target.value })}
                         required
                     />
                 </div>
@@ -23,13 +45,15 @@ const ConsultarConta = () => {
                         type="text"
                         className="form-control"
                         id="descricao"
+                        name="descricao"
                         placeholder="Descrição"
-                        value=""
+                        value={conta.descricao}
+                        onChange={(e) => setConta({ ...conta, descricao: e.target.value })}
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-warning">Editar</button>
-                <button type="submit" className="btn btn-danger">Excluir</button>
+                <button type="submit" className="btn btn-warning" onClick={editarConta}>Editar</button>
+                <button type="submit" className="btn btn-danger" onClick={excluirConta}>Excluir</button>
             </form >
         </div >
     );

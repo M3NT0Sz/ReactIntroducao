@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import api from '../../api'; // Importando a API configurada
+import api from '../../api';
 
-const Contas = () => {
-    const [contas, setContas] = useState([]);
+const Categorias = () => {
+    const [categorias, setCategorias] = useState([]);
 
     useEffect(() => {
-        // Fazendo a requisição para buscar as contas do banco de dados
-        api.get('/contas')
+        api.get('/categorias')
             .then(response => {
-                setContas(response.data); // Atualizando o estado com os dados do banco
+                setCategorias(response.data);
             })
             .catch(error => {
-                console.error('Erro ao buscar contas:', error);
+                console.error('Erro ao buscar categorias:', error);
             });
     }, []);
 
     return (
         <Container>
-            <h3>Lista de Contas</h3>
-            {contas.length === 0 ? (
-                <p>Nenhuma conta cadastrada.</p>
+            <h3>Lista de Categorias</h3>
+            {categorias.length === 0 ? (
+                <p>Nenhuma categoria cadastrada.</p>
             ) : (
                 <Table striped bordered hover responsive>
                     <thead>
@@ -33,13 +32,13 @@ const Contas = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {contas.map((conta, index) => (
+                        {categorias.map((categoria, index) => (
                             <tr key={index}>
-                                <td>{conta.id}</td>
-                                <td>{conta.nome}</td>
-                                <td>{conta.descricao}</td>
+                                <td>{categoria.id}</td>
+                                <td>{categoria.nome}</td>
+                                <td>{categoria.descricao}</td>
                                 <td>
-                                    <Button variant="info" as={Link} to="/consultar_conta" state={{ conta }} className="me-2">
+                                    <Button variant="info" as={Link} to="/consultar_categoria" state={{ categoria }} className="me-2">
                                         Consultar
                                     </Button>
                                 </td>
@@ -52,4 +51,4 @@ const Contas = () => {
     );
 };
 
-export default Contas;
+export default Categorias;

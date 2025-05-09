@@ -1,44 +1,43 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../api";
 
-const ConsultarRenda = () => {
+const ConsultarCategoria = () => {
     const location = useLocation();
-    const [renda, setRenda] = useState(location.state?.renda || { nome: '', descricao: '' });
+    const [categoria, setCategoria] = useState(location.state?.categoria || { nome: '', descricao: '' });
     const navigate = useNavigate();
 
-    const editarRenda = (e) => {
+    const editarCategoria = (e) => {
         e.preventDefault(); // Prevenir o comportamento padrão do botão
-        api.put('/fontes/' + renda.id, renda)
+        api.put('/categorias/' + categoria.id, categoria)
             .then(() => {
-                alert("Renda editada com sucesso!");
-                navigate('/rendas');
+                alert("Categoria editada com sucesso!");
+                navigate('/categorias');
             })
             .catch(error => {
-                console.error("Erro ao editar renda:", error);
-                alert("Erro ao editar renda.");
+                console.error("Erro ao editar categoria:", error);
+                alert("Erro ao editar categoria.");
             });
     };
 
-    const excluirRenda = (e) => {
+    const excluirCategoria = (e) => {
         e.preventDefault(); // Prevenir o comportamento padrão do botão
-        if (window.confirm("Tem certeza que deseja excluir a renda?")) {
-            api.delete('/fontes/' + renda.id)
+        if (window.confirm("Tem certeza que deseja excluir a categoria?")) {
+            api.delete('/categorias/' + categoria.id)
                 .then(() => {
-                    alert("Renda excluída com sucesso!");
-                    navigate('/rendas');
+                    alert("Categoria excluída com sucesso!");
+                    navigate('/categorias');
                 })
                 .catch(error => {
-                    console.error("Erro ao excluir renda:", error);
-                    alert("Erro ao excluir renda.");
+                    console.error("Erro ao excluir categoria:", error);
+                    alert("Erro ao excluir categoria.");
                 });
         }
     };
 
     return (
         <div className="container mt-5">
-            <h1 className="mb-4">Editar Renda</h1>
+            <h1 className="mb-4">Editar Categoria</h1>
             <form>
                 <div className="mb-3">
                     <label htmlFor="nome" className="form-label">Nome</label>
@@ -47,8 +46,8 @@ const ConsultarRenda = () => {
                         className="form-control"
                         id="nome"
                         name="nome"
-                        value={renda.nome}
-                        onChange={(e) => setRenda({ ...renda, nome: e.target.value })}
+                        value={categoria.nome}
+                        onChange={(e) => setCategoria({ ...categoria, nome: e.target.value })}
                         placeholder="Nome"
                         required
                     />
@@ -60,17 +59,17 @@ const ConsultarRenda = () => {
                         className="form-control"
                         id="descricao"
                         name="descricao"
-                        value={renda.descricao}
-                        onChange={(e) => setRenda({ ...renda, descricao: e.target.value })}
+                        value={categoria.descricao}
+                        onChange={(e) => setCategoria({ ...categoria, descricao: e.target.value })}
                         placeholder="Descrição"
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-warning" onClick={editarRenda}>Editar</button>
-                <button type="button" className="btn btn-danger" onClick={excluirRenda}>Excluir</button>
+                <button type="submit" className="btn btn-warning" onClick={editarCategoria}>Editar</button>
+                <button type="button" className="btn btn-danger" onClick={excluirCategoria}>Excluir</button>
             </form>
         </div>
     );
 };
 
-export default ConsultarRenda;
+export default ConsultarCategoria;

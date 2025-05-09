@@ -14,13 +14,20 @@ const ConsultarConta = () => {
         navigate('/contas');
     }
 
-    const excluirConta = () => {
+    const excluirConta = (e) => {
+        e.preventDefault(); // Prevenir o comportamento padrão do botão
         if (window.confirm("Tem certeza que deseja excluir a conta?")) {
             api.delete('/contas/' + conta.id)
-                .then(() => alert("Conta excluída com sucesso!"));
-            navigate('/contas');
+                .then(() => {
+                    alert("Conta excluída com sucesso!");
+                    navigate('/contas');
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir conta:", error);
+                    alert("Ocorreu um erro ao tentar excluir a conta.");
+                });
         }
-    }
+    };
 
     return (
         <div className="container mt-5">
